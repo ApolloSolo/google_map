@@ -64,7 +64,7 @@ export default function Login() {
 
   return (
     <div className="relative flex flex-col justify-center h-[calc(100vh-66px)] overflow-hidden">
-      <div className="w-full p-6 m-auto bg-white rounded-md shadow-md lg:max-w-xl dark:bg-gray-800">
+      <div className="w-full p-6 m-auto bg-[#eae2b7] rounded-md shadow-md lg:max-w-xl dark:bg-gray-800">
         <h1 className="text-3xl font-semibold text-center underline dark:text-[#fdf8ad]">
           Login
         </h1>
@@ -81,7 +81,7 @@ export default function Login() {
               name="email"
               onChange={onChange}
               required
-              className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+              className="block w-full px-4 py-2 mt-2 bg-[#e4e2d8] dark:bg-gray-700 dark:text-slate-200 border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
           </div>
           <div className="mb-2">
@@ -96,7 +96,7 @@ export default function Login() {
               name="password"
               onChange={onChange}
               required
-              className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+              className="block w-full px-4 py-2 mt-2 bg-[#e4e2d8] dark:bg-gray-700 border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
           </div>
           <Link
@@ -108,7 +108,7 @@ export default function Login() {
           <div className="mt-6">
             <button
               type="submit"
-              className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+              className="w-full px-4 py-2 mt-4 tracking-wide text-white transition-colors duration-200 transform bg-[#2a9d8f] rounded-md hover:bg-[#2d5564] focus:outline-none focus:bg-[#264653]"
             >
               Login
             </button>

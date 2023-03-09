@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Transition } from "@headlessui/react";
 import Switcher from "./Switcher";
 import UserContext from "../context/UserContext";
+import { Link } from "react-router-dom";
 
 function Nav() {
   const { getUserData, logout } = useContext(UserContext);
@@ -18,7 +19,7 @@ function Nav() {
 
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <nav className="bg-gray-100 dark:bg-gray-800">
+    <nav className="bg-[#2a9d8f] dark:bg-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center w-full">
@@ -29,69 +30,13 @@ function Nav() {
                 alt="Workflow"
               />
             </div>
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-4">
-                <a
-                  href="#"
-                  className=" dark:dark:hover:bg-gray-700 hover:bg-gray-400 dark:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Dashboard
-                </a>
-
-                <a
-                  href="#"
-                  className="dark:text-white dark:hover:bg-gray-700 hover:bg-gray-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Team
-                </a>
-
-                <a
-                  href="/upload_csv"
-                  className="dark:text-white dark:hover:bg-gray-700 hover:bg-gray-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Upload CSV
-                </a>
-                {userData ? (
-                  <a
-                    onClick={logout_user}
-                    href="#"
-                    className="dark:text-white dark:hover:bg-gray-700 hover:bg-gray-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                  >
-                    Logout
-                  </a>
-                ) : (
-                  <>
-                    <a
-                      href="/login"
-                      className="dark:text-white dark:hover:bg-gray-700 hover:bg-gray-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                    >
-                      Login
-                    </a>
-
-                    <a
-                      href="/register"
-                      className="dark:text-white dark:hover:bg-gray-700 hover:bg-gray-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                    >
-                      Register
-                    </a>
-                  </>
-                )}
-                <div className="absolute right-1 top-1">
-                  <div className="relative">
-                    <Switcher />
-                    <p className="absolute right-1 top-8 dark:text-white dark:hover:bg-gray-700 hover:bg-gray-400 px-1 py-1 rounded-md text-sm font-medium">
-                      {userData ? userData.username : false}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {userData ? (<span className="ml-4 dark:text-zinc-50">{userData.username}</span>) : false}
           </div>
           <div className="-mr-2 flex md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
               type="button"
-              className="dark:bg-gray-900 bg-gray-300 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-600 focus:ring-white"
+              className="dark:bg-gray-900 bg-[#264653] inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-600 focus:ring-white"
               aria-controls="mobile-menu"
               aria-expanded="false"
             >
@@ -145,51 +90,50 @@ function Nav() {
       >
         {(ref) => (
           <div className="md:hidden" id="mobile-menu">
-            <div ref={ref} className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              <a
-                href="#"
-                className="dark:dark:hover:bg-gray-700 hover:bg-gray-400 dark:text-white block px-3 py-2 rounded-md text-base font-medium"
-              >
-                Dashboard
-              </a>
-
-              <a
-                href="#"
-                className="dark:text-white dark:hover:bg-gray-700 hover:bg-gray-400 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-              >
-                Team
-              </a>
-
-              <a
-                href="/upload_csv"
-                className="dark:text-white dark:hover:bg-gray-700 hover:bg-gray-400 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-              >
-                Upload CSV
-              </a>
-
+            <div ref={ref} className="px-2 pt-2 pb-3 space-y-1 sm:px-3 mr-8">
               {userData ? (
-                <a
-                  onClick={logout_user}
-                  href="#"
-                  className="dark:text-white dark:hover:bg-gray-700 hover:bg-gray-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Logout
-                </a>
+                <>
+                  <Link
+                    to={"/dashboard"}
+                    className="dark:hover:bg-gray-700 hover:bg-[#144b44] dark:text-white hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                  >
+                    Dashboard
+                  </Link>
+                  <Link
+                    to={"/#"}
+                    className="dark:text-white dark:hover:bg-gray-700 hover:bg-[#144b44] hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                  >
+                    Team
+                  </Link>
+                  <Link
+                    to={"/upload_csv"}
+                    className="dark:text-white dark:hover:bg-gray-700 hover:bg-[#144b44] hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                  >
+                    Upload CSV
+                  </Link>
+
+                  <Link
+                    onClick={logout_user}
+                    to={"/"}
+                    className="dark:text-white dark:hover:bg-gray-700 hover:bg-[#144b44] hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                  >
+                    Logout
+                  </Link>
+                </>
               ) : (
                 <>
-                  <a
-                    href="/login"
-                    className="dark:text-white dark:hover:bg-gray-700 hover:bg-gray-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  <Link
+                    to={"/login"}
+                    className="dark:text-white dark:hover:bg-gray-700 hover:bg-[#144b44] hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                   >
                     Login
-                  </a>
-
-                  <a
-                    href="register"
-                    className="dark:text-white dark:hover:bg-gray-700 hover:bg-gray-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  </Link>
+                  <Link
+                    to={"/register"}
+                    className="dark:text-white dark:hover:bg-gray-700 hover:bg-[#144b44] hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                   >
                     Register
-                  </a>
+                  </Link>
                 </>
               )}
             </div>
@@ -202,3 +146,5 @@ function Nav() {
 }
 
 export default Nav;
+
+// Compare it to whats in postgres db

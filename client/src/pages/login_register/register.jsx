@@ -63,15 +63,15 @@ export default function Register() {
 
   return (
     <div className="relative flex flex-col justify-center h-[calc(100vh-66px)] overflow-hidden">
-      <div className="w-full p-6 m-auto bg-white rounded-md shadow-md lg:max-w-xl dark:bg-gray-800">
-        <h1 className="text-3xl font-semibold text-center underline dark:text-[#fdf8ad]">
+      <div className="w-full p-6 m-auto bg-[#eae2b7] rounded-md shadow-md lg:max-w-xl dark:bg-gray-800">
+        <h1 className="text-3xl font-semibold text-center underline dark:text-slate-200">
           Register
         </h1>
         <form onSubmit={onSubmit} className="mt-6">
           <div className="mb-2">
             <label
               for="username"
-              className="block text-sm font-semibold text-gray-800 dark:text-[#fdf8ad]"
+              className="block text-sm font-semibold text-gray-800 dark:text-slate-200"
             >
               Username
             </label>
@@ -80,13 +80,13 @@ export default function Register() {
               name="username"
               onChange={onChange}
               required
-              className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+              className="block w-full px-4 py-2 mt-2 dark:bg-gray-700 dark:text-slate-200 border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
           </div>
           <div className="mb-2">
             <label
               for="email"
-              className="block text-sm font-semibold text-gray-800 dark:text-[#fdf8ad]"
+              className="block text-sm font-semibold text-gray-800 dark:text-slate-200"
             >
               Email
             </label>
@@ -95,13 +95,13 @@ export default function Register() {
               name="email"
               onChange={onChange}
               required
-              className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+              className="block w-full px-4 py-2 mt-2 dark:bg-gray-700 dark:text-slate-200 border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
           </div>
           <div className="mb-2">
             <label
               for="password"
-              className="block text-sm font-semibold text-gray-800 dark:text-[#fdf8ad]"
+              className="block text-sm font-semibold text-gray-800 dark:text-slate-200"
             >
               Password
             </label>
@@ -110,13 +110,13 @@ export default function Register() {
               name="password"
               onChange={onChange}
               required
-              className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+              className="block w-full px-4 py-2 mt-2 dark:bg-gray-700 dark:text-slate-200 border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
           </div>
           <div className="mb-2">
             <label
               for="confirmPass"
-              className="block text-sm font-semibold text-gray-800 dark:text-[#fdf8ad]"
+              className="block text-sm font-semibold text-gray-800 dark:text-slate-200"
             >
               Confirm Password
             </label>
@@ -125,21 +125,21 @@ export default function Register() {
               name="confirmPass"
               onChange={onChange}
               required
-              className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+              className="block w-full px-4 py-2 mt-2 dark:bg-gray-700 dark:text-slate-200 border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
           </div>
 
           <div className="mt-6">
             <button
               type="submit"
-              className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+              className="w-full px-4 py-2 mt-4 tracking-wide text-white transition-colors duration-200 transform bg-[#2a9d8f] rounded-md hover:bg-[#2d5564] focus:outline-none focus:bg-[#264653]"
             >
               Submit
             </button>
           </div>
         </form>
 
-        <p className="mt-8 text-xs font-light text-center text-gray-700 dark:text-[#fdf8ad]">
+        <p className="mt-8 text-xs font-light text-center text-gray-700 dark:text-slate-200">
           {" "}
           Already have an account?{" "}
           <Link

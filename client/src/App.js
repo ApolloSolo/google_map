@@ -17,10 +17,10 @@ function App() {
   }, []);
   return (
     <UserProvider>
-      <div className={width < 768 ? "" : "flex w-full"}>
+      <div className={width < 768 ? "bg-[#a6e5f0] dark:bg-[#0a788b]" : "flex w-screen bg-[#a6e5f0] dark:bg-[#0a788b]"}>
         <Router>
           <header>{width < 768 ? <Nav /> : <SideNav />}</header>
-          <main>
+          <main className="w-full p-4">
             <h1>Home Page</h1>
             <Routes>
               <Route path="/login" element={<Login />} />

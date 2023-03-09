@@ -1,27 +1,61 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import control from "../assets/control.png";
+import Switcher from "./Switcher";
+import UserContext from "../context/UserContext";
 
-import {AiOutlineDashboard, AiOutlineCalendar, AiOutlineSearch, AiOutlineLineChart, AiOutlineSetting} from "react-icons/ai"
-import {BiChat, BiUser, BiFile} from "react-icons/bi"
+import {
+  AiOutlineDashboard,
+  AiOutlineCalendar,
+  AiOutlineSearch,
+  AiOutlineLineChart,
+  AiOutlineSetting
+} from "react-icons/ai";
+import { BiLogOut, BiUser, BiFile, BiLogIn, BiPencil } from "react-icons/bi";
+import { Link } from "react-router-dom";
+
 const SideNav = () => {
+  const { getUserData, logout } = useContext(UserContext);
+  const [userData, setUserData] = useState(null);
   const [open, setOpen] = useState(false);
   const Menus = [
-    { title: "Dashboard", src: <AiOutlineDashboard size={24}/> },
-    { title: "Inbox", src: <BiChat size={24}/> },
-    { title: "Accounts", src: <BiUser size={24}/>, gap: true },
-    { title: "Schedule ", src: <AiOutlineCalendar size={24}/> },
-    { title: "Search", src: <AiOutlineSearch size={24}/> },
-    { title: "Analytics", src: <AiOutlineLineChart size={24}/> },
-    { title: "Files ", src: <BiFile size={24}/>, gap: true },
-    { title: "Setting", src: <AiOutlineSetting size={24}/> },
+    {
+      title: "Dashboard",
+      route: "/dashboard",
+      src: <AiOutlineDashboard size={24} />
+    },
+    {
+      title: "Account",
+      route: "/account",
+      src: <BiUser size={24} />,
+      gap: true
+    },
+    {
+      title: "Analytics",
+      route: "/analytics",
+      src: <AiOutlineLineChart size={24} />
+    },
+    {
+      title: "Upload CSV",
+      route: "/upload_csv",
+      src: <BiFile size={24} />,
+    }
   ];
+
+  useEffect(() => {
+    let user_data = getUserData();
+    setUserData(user_data);
+  }, []);
+
+  async function logout_user() {
+    logout();
+  }
 
   return (
     <>
       <div
         className={` ${
           open ? "w-72" : "w-20 "
-        } bg-gray-500 h-screen p-5  pt-8 relative duration-300`}
+        } dark:bg-gray-800 bg-[#2a9d8f] h-screen p-5  pt-8 relative duration-300`}
       >
         <img
           src={control}
@@ -41,25 +75,71 @@ const SideNav = () => {
               !open && "scale-0"
             }`}
           >
-            Designer
+            {userData ? <span>{userData.username}</span> : <span>Hello</span>}
           </h1>
         </div>
         <ul className="pt-6">
-          {Menus.map((Menu, index) => (
-            <li
-              key={index}
-              className={`flex  rounded-md p-2 cursor-pointer hover:bg-gray-800 text-gray-300 text-sm items-center gap-x-4 
+          {userData ? (
+            <>
+              {Menus.map((Menu, index) => (
+                <Link to={Menu.route}>
+                  <li
+                    key={index}
+                    className={`flex  rounded-md p-2 cursor-pointer hover:bg-[#144b44] hover:text-gray-200 dark:hover:text-gray-800 dark:hover:bg-gray-300 dark:text-gray-200 text-md items-center gap-x-4 
               ${Menu.gap ? "mt-9" : "mt-2"} ${
-                index === 0 && "bg-light-white"
-              } `}
-            >
-               {Menu.src}
-              <span className={`${!open && "hidden"} origin-left duration-200`}>
-                {Menu.title}
-              </span>
-            </li>
-          ))}
+                      index === 0 && "bg-light-white"
+                    } `}
+                  >
+                    {Menu.src}
+                    <span
+                      className={`${
+                        !open && "hidden"
+                      } origin-left duration-200`}
+                    >
+                      {Menu.title}
+                    </span>
+                  </li>
+                </Link>
+              ))}
+
+              <li
+                onClick={logout_user}
+                className="flex mt-9 rounded-md p-2 cursor-pointer hover:bg-[#144b44] hover:text-gray-200 dark:hover:text-gray-800 dark:hover:bg-gray-300 dark:text-gray-200 text-md items-center gap-x-4 "
+              >
+                <BiLogOut size={24} />
+                <span
+                  className={`${!open && "hidden"} origin-left duration-200`}
+                >
+                  Logout
+                </span>
+              </li>
+            </>
+          ) : (
+            <>
+              <Link to={"/login"}>
+                <li className="flex mt-9 rounded-md p-2 cursor-pointer hover:bg-[#144b44] hover:text-gray-200 dark:hover:text-gray-800 dark:hover:bg-gray-300 dark:text-gray-200 text-md items-center gap-x-4 ">
+                  <BiLogIn size={24} />
+                  <span
+                    className={`${!open && "hidden"} origin-left duration-200`}
+                  >
+                    Login
+                  </span>
+                </li>
+              </Link>
+              <Link to={"/register"}>
+                <li className="flex rounded-md p-2 cursor-pointer hover:bg-[#144b44] hover:text-gray-200 dark:hover:text-gray-800 dark:hover:bg-gray-300 dark:text-gray-200 text-md items-center gap-x-4 ">
+                  <BiPencil size={24} />
+                  <span
+                    className={`${!open && "hidden"} origin-left duration-200`}
+                  >
+                    Register
+                  </span>
+                </li>
+              </Link>
+            </>
+          )}
         </ul>
+        <Switcher />
       </div>
     </>
   );

@@ -18,7 +18,7 @@ const protected = async (req, res, next) => {
 
       next();
     } else {
-      throw new Error("Not Auth User");
+      res.status(401).json({error: true, success: false, message: "Not authorized to take this action."})
     }
   } catch (error) {
     res.json({ error: error.message });
