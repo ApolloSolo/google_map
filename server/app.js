@@ -7,10 +7,6 @@ const logger = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-const multer = require("multer");
-const fs = require("node:fs");
-const csv = require("csv-parser");
-
 const app = express();
 
 app.use(bodyParser.json());
@@ -22,39 +18,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./uploads/");
-  },
-  filename: (req, file, cb) => {
-    cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-    );
-  }
-});
 
-const upload = multer({ storage: storage });
-
-app.post("/csv", upload.single('file'), (req, res) => {
-  console.log("HITTING UPLOAD CSV ROUTE!");
-  console.log(req.file.path);
-  try {
-    const results = [];
-
-    fs.createReadStream(req.file.path)
-      .pipe(csv())
-      .on("data", (data) => results.push(data))
-      .on("end", () => {
-        //fs.unlinkSync("./locations.csv");
-        console.log(results);
-        res.json(results);
-      });
-  } catch (error) {
-    res.json(error);
-    console.log(error);
-  }
-});
 
 app.use(require("./routes"));
 
