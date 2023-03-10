@@ -21,6 +21,12 @@ const userSchema = new Schema(
       minlength: [3, "Password must be greater than 2 characters"],
       maxLength: [18, "Password must be less than 19 characters"],
     },
+    datasets: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Dataset",
+      },
+    ],
   },
   {
     timestamps: true,

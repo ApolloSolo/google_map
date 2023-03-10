@@ -2,6 +2,7 @@ const router = require("express").Router();
 const { upload_csv } = require("../../controllers/file_upload");
 const multer = require("multer");
 const path = require("path");
+const protected = require("../../middleware/auth");
 
 
 const storage = multer.diskStorage({
@@ -18,6 +19,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.post("/csv", upload.single('file'), upload_csv);
+router.post("/csv/:id", upload.single('file'), upload_csv);
 
 module.exports = router;

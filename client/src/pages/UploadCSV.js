@@ -1,7 +1,15 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import UserContext from "../context/UserContext";
 
 const UploadCSV = () => {
   const [selectedFile, setSelectedFile] = useState(null);
+  const { login, getUserData } = useContext(UserContext);
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    let user_data = getUserData();
+    setUserData(user_data);
+  }, []);
 
   const handleFileInputChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -12,14 +20,14 @@ const UploadCSV = () => {
     const formData = new FormData();
     formData.append("file", selectedFile);
 
-    console.log(selectedFile);
+    console.log(userData.id);
 
-    fetch("http://localhost:5000/api/file_upload/csv", {
+    fetch(`http://localhost:5000/api/file_upload/csv/${userData.id}`, {
       method: "POST",
       body: formData,
       headers: {
-        ContentType: "multipart/form-data"
-      }
+        ContentType: "multipart/form-data",
+      },
     })
       .then((response) => response.json())
       .then((data) => console.log(data))
