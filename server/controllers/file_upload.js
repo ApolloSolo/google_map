@@ -21,6 +21,7 @@ const upload_csv = async (req, res) => {
     for await (const address of file_data) {
       console.log(address);
       const added = await Address.create({
+        dataset_id: new_dataset._id, 
         street_number: address.street_number,
         route: address.route,
         city: address.city,
