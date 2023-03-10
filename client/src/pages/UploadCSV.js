@@ -14,7 +14,7 @@ const UploadCSV = () => {
 
     console.log(selectedFile);
 
-    fetch("http://localhost:5000/csv", {
+    fetch("http://localhost:5000/api/file_upload/csv", {
       method: "POST",
       body: formData,
       headers: {
