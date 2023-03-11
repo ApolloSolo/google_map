@@ -30,22 +30,12 @@ const UploadCSV = () => {
       },
     })
       .then((response) => response.json())
-      .then((data) => console.log(data))
+      .then((data) => {
+        console.log(data)
+        window.location.assign("/dashboard");
+      })
       .catch((error) => console.log(error));
   };
-  /*
-
-  const url = 'http://localhost:5000/api/file_upload/csv';
-    axios({
-        method: 'POST',
-        url: url,
-        headers: {
-            ContentType: 'multipart/form-data'
-        },
-        body: formData
-    })
-
-  */
 
   return (
     <div className="relative flex flex-col justify-center h-[calc(100vh-66px)] overflow-hidden">

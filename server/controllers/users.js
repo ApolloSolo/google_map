@@ -27,8 +27,9 @@ const getUsers = async (req, res, next) => {
 
 const getUser = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const foundUser = await User.findById(id).select("-__v -password");
+    const foundUser = await User.findById(req.user._id).select(
+      "-__v -password"
+    );
     if (!foundUser) {
       res.status(404).json({
         error: true,
@@ -139,7 +140,12 @@ const logout = async (req, res, next) => {
   res.cookie("token", token, { httpOnly: true, maxAge: 0 });
   res
     .status(202)
-    .send({ success: true, error: false, message: "Logout Successful", logged_in: false });
+    .send({
+      success: true,
+      error: false,
+      message: "Logout Successful",
+      logged_in: false
+    });
 };
 
 const changePassword = async (req, res) => {
@@ -185,6 +191,8 @@ const emailPasswordReset = async (req, res) => {
   try {
     const { email } = req.body;
     const user = await User.findOne({ email });
+
+    console.log(user);
 
     if (!user) {
       res.status(404);

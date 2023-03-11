@@ -1,17 +1,46 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import UserContext from "../context/UserContext";
+import DatasetCard from "../components/DatasetCard";
 
 const Dashboard = () => {
   const { getUserData } = useContext(UserContext);
+  const [userData, setUserData] = useState(null);
+  const [datasets, setDatasets] = useState(null);
 
   useEffect(() => {
     let user_data = getUserData();
     if (!user_data || !user_data.logged_in) {
       window.location.assign("/login");
     }
-  });
+    setUserData(user_data);
 
-  return <div>Dashboard</div>;
+    const fetch_datasets = async (userData) => {
+      const response = await fetch(`/api/datasets/mutli/${userData.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setDatasets(data.data);
+        console.log(data.data);
+      }
+    };
+    fetch_datasets(userData);
+  }, []);
+
+  return (
+    <>
+      {datasets ? (
+        <p>Loading...</p>
+      ) : (
+        <div className="relative flex flex-col justify-center h-[calc(100dvh-96px)] overflow-hidden">
+          <DatasetCard />
+        </div>
+      )}
+    </>
+  );
 };
 
 export default Dashboard;

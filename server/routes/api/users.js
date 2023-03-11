@@ -18,7 +18,7 @@ router.post("/register", registerUser);
 router.post("/login", login);
 router.post("/logout", logout);
 router.post("/forgotpassword", emailPasswordReset);
-router.get("/:id", getUser);
+router.get("/me", protected, getUser);
 router.patch("/update/edit", protected, editUserData);
 router.put("/change_pw", protected, changePassword);
 router.put("/resetpassword/:resetToken", resetPassword);

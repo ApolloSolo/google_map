@@ -37,7 +37,6 @@ export default function Login() {
       const data = await response.json();
 
       if (response.ok) {
-        //Auth.login(data.token);
         console.log(data);
         login(
           JSON.stringify({
