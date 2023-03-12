@@ -10,6 +10,8 @@ import SideNav from "./components/SideNav";
 import ForgotPassword from "./pages/admin/ForgotPassword";
 import ResetPassword from "./pages/admin/ResetPassword";
 import Account from "./pages/admin/Account";
+import Addresses from "./pages/Addresses";
+import Address from "./pages/Address";
 
 function App() {
   const [width, setWidth] = useState(window.innerWidth);
@@ -23,8 +25,8 @@ function App() {
       <div
         className={
           width < 768
-            ? "bg-[#a6e5f0] dark:bg-[#0a788b]"
-            : "flex w-screen bg-[#a6e5f0] dark:bg-[#0a788b]"
+            ? "bg-[#a6e5f0] dark:bg-[#0a788b] min-h-screen"
+            : "flex w-screen bg-[#a6e5f0] dark:bg-[#0a788b] min-h-screen"
         }
       >
         <Router>
@@ -34,6 +36,8 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/addresses/:_id" element={<Addresses />} />
+              <Route path="/edit_address/:_id" element={<Address />} />
               <Route path="/account" element={<Account />} />
               <Route path="/upload_csv" element={<UploadCSV />} />
               <Route path="/forgot_pass" element={<ForgotPassword />} />

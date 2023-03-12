@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
 import { BiPencil, BiCheck } from "react-icons/bi";
 
 export default function DatasetCard({ dataset }) {
@@ -26,7 +26,27 @@ export default function DatasetCard({ dataset }) {
         console.log(data);
         window.location.reload(false);
       } else throw new Error(data.error);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const delete_dataset = async () => {
+    try {
+      const response = await fetch(`/api/datasets/${dataset._id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log(data);
+      } else throw new Error(data.error);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onChange = (event) => {
@@ -207,12 +227,15 @@ export default function DatasetCard({ dataset }) {
         >
           <dl className="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-2 xl:grid-cols-2 dark:text-white sm:p-8">
             <div className="flex flex-col items-center justify-center">
-              <Link className="w-full px-4 py-2 mt-4 text-center tracking-wide text-white transition-colors duration-200 transform bg-[#2a9d8f] rounded-md hover:bg-[#2d5564] focus:outline-none focus:bg-[#264653]">
+              <Link to={`/addresses/${dataset._id}`} className="w-full px-4 py-2 mt-4 text-center tracking-wide text-white transition-colors duration-200 transform bg-[#2a9d8f] rounded-md hover:bg-[#2d5564] focus:outline-none focus:bg-[#264653]">
                 View Dataset
               </Link>
             </div>
             <div className="flex flex-col items-center justify-center">
-              <button className="w-full px-4 py-2 mt-4 tracking-wide text-white transition-colors duration-200 transform bg-[#9d2a30] rounded-md hover:bg-[#bd4046] focus:outline-none focus:bg-[#8f1b21]">
+              <button
+                onClick={delete_dataset}
+                className="w-full px-4 py-2 mt-4 tracking-wide text-white transition-colors duration-200 transform bg-[#9d2a30] rounded-md hover:bg-[#bd4046] focus:outline-none focus:bg-[#8f1b21]"
+              >
                 Delete Dataset
               </button>
             </div>
