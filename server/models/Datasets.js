@@ -16,7 +16,21 @@ const datasetSchema = new Schema(
         type: Schema.Types.ObjectId,
         ref: "Address"
       }
-    ]
+    ],
+    kb: {
+      type: Number,
+      required: true
+    },
+    geo_processed: {
+      type: Boolean,
+      required: true,
+      default: false
+    },
+    dataset_name: {
+      type: String,
+      required: true,
+      default: "New Dataset"
+    }
   },
   {
     timestamps: true

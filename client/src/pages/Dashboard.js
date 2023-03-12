@@ -27,16 +27,20 @@ const Dashboard = () => {
         console.log(data.data);
       }
     };
-    fetch_datasets(userData);
+    fetch_datasets(user_data);
   }, []);
 
   return (
     <>
-      {datasets ? (
+      {!datasets ? (
         <p>Loading...</p>
       ) : (
-        <div className="relative flex flex-col justify-center h-[calc(100dvh-96px)] overflow-hidden">
-          <DatasetCard />
+        <div className="relative flex flex-col justify-center h-full overflow-hidden">
+          {
+            datasets.map((dataset) => (
+              <DatasetCard key={dataset._id} dataset={dataset}/>
+            ))
+          }
         </div>
       )}
     </>

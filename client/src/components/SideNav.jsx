@@ -55,7 +55,7 @@ const SideNav = () => {
       <div
         className={` ${
           open ? "w-72" : "w-20 "
-        } dark:bg-gray-800 bg-[#2a9d8f] h-screen p-5  pt-8 relative duration-300`}
+        } dark:bg-gray-800 bg-[#2a9d8f] h-full p-5 pt-8 relative duration-300`}
       >
         <img
           src={control}

@@ -1,13 +1,87 @@
 import { useState } from "react";
+import {Link} from "react-router-dom"
+import { BiPencil, BiCheck } from "react-icons/bi";
 
-export default function DatasetCard() {
+export default function DatasetCard({ dataset }) {
   const [openStat, setOpenStat] = useState(true);
   const [openService, setOpenService] = useState(false);
+  const [editName, setEditName] = useState(false);
+  const [datasetName, setDatasetName] = useState({
+    name: dataset.dataset_name
+  });
+
+  const update_dataset = async (name) => {
+    try {
+      const response = await fetch(`/api/datasets/rename/${dataset._id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ name }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        setDatasetName({ name });
+        console.log(data);
+        window.location.reload(false);
+      } else throw new Error(data.error);
+    } catch (error) {}
+  };
+
+  const onChange = (event) => {
+    setDatasetName({ ...datasetName, [event.target.name]: event.target.value });
+  };
+
+  const onSubmit = () => {
+    update_dataset(datasetName.name);
+  };
 
   return (
-    <div className="w-full max-w-2xl mx-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <div className="w-full max-w-2xl mx-auto mb-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div className="flex justify-center items-center dark:text-white text-gray-900 p-2">
+        {editName ? (
+          <input
+            name="name"
+            onChange={onChange}
+            required
+            defaultValue={datasetName.name}
+            className="text-gray-900 mr-4 text-center"
+          />
+        ) : (
+          <strong className="mr-4">{dataset.dataset_name}</strong>
+        )}
+        {editName ? (
+          <div className="flex items-center">
+            <BiCheck
+              onClick={() => {
+                onSubmit();
+                setEditName(!editName);
+              }}
+              size={24}
+              className="hover:text-green-500 cursor-pointer"
+            />
+            <span
+              onClick={() => {
+                setEditName(!editName);
+              }}
+              className="text-lg ml-4 hover:text-red-500 cursor-pointer"
+            >
+              X
+            </span>
+          </div>
+        ) : (
+          <BiPencil
+            onClick={() => {
+              setEditName(!editName);
+            }}
+            size={20}
+            className="hover:text-gray-500 cursor-pointer"
+          />
+        )}
+      </div>
       <div className="sm:hidden">
-        <label for="tabs" className="sr-only">
+        <label htmlFor="tabs" className="sr-only">
           Select tab
         </label>
         <select
@@ -22,14 +96,14 @@ export default function DatasetCard() {
             }
           }}
           id="tabs"
-          className="bg-gray-50 border-0 border-b border-gray-200 text-gray-900 text-sm rounded-t-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="bg-gray-50 border-0 border-b border-gray-200 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         >
           <option value="stats">Statistics</option>
           <option value="actions">Actions</option>
         </select>
       </div>
       <ul
-        className="hidden text-sm font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg sm:flex dark:divide-gray-600 dark:text-gray-400"
+        className="hidden text-sm font-medium text-center text-gray-500 divide-x divide-gray-200 sm:flex dark:divide-gray-600 dark:text-gray-400"
         id="fullWidthTab"
         data-tabs-toggle="#fullWidthTabContent"
         role="tablist"
@@ -71,7 +145,7 @@ export default function DatasetCard() {
             aria-selected="false"
             className={`${
               openService ? "dark:bg-gray-600 bg-gray-200" : "dark:bg-gray-700"
-            } inline-block w-full p-4 bg-gray-100 hover:bg-gray-200 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600`}
+            } inline-block w-full p-4 rounded-tr-lg bg-gray-100 hover:bg-gray-200 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600`}
           >
             Actions
           </button>
@@ -89,130 +163,60 @@ export default function DatasetCard() {
           role="tabpanel"
           aria-labelledby="stats-tab"
         >
-          <dl className="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-3 xl:grid-cols-6 dark:text-white sm:p-8">
+          <dl className="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-2 xl:grid-cols-2 dark:text-white sm:p-8">
             <div className="flex flex-col items-center justify-center">
-              <dt className="mb-2 text-3xl font-extrabold">73M+</dt>
+              <dt className="mb-2 text-3xl font-extrabold">
+                {dataset.addresses.length}
+              </dt>
               <dd className="font-light text-gray-500 dark:text-gray-400">
-                Developers
+                Entries
               </dd>
             </div>
             <div className="flex flex-col items-center justify-center">
-              <dt className="mb-2 text-3xl font-extrabold">100M+</dt>
+              <dt className="mb-2 text-3xl font-extrabold">{dataset.kb} kb</dt>
               <dd className="font-light text-gray-500 dark:text-gray-400">
-                Public repositories
+                File Size
               </dd>
             </div>
             <div className="flex flex-col items-center justify-center">
-              <dt className="mb-2 text-3xl font-extrabold">1000s</dt>
+              <dt className="mb-2 text-3xl font-extrabold">
+                {new Date(dataset.createdAt).toLocaleDateString()}
+              </dt>
               <dd className="font-light text-gray-500 dark:text-gray-400">
-                Open source projects
+                Created
               </dd>
             </div>
             <div className="flex flex-col items-center justify-center">
-              <dt className="mb-2 text-3xl font-extrabold">1B+</dt>
+              <dt className="mb-2 text-3xl font-extrabold">
+                {new Date(dataset.updatedAt).toLocaleDateString()}
+              </dt>
               <dd className="font-light text-gray-500 dark:text-gray-400">
-                Contributors
-              </dd>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <dt className="mb-2 text-3xl font-extrabold">90+</dt>
-              <dd className="font-light text-gray-500 dark:text-gray-400">
-                Top Forbes companies
-              </dd>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <dt className="mb-2 text-3xl font-extrabold">4M+</dt>
-              <dd className="font-light text-gray-500 dark:text-gray-400">
-                Organizations
+                Last Modified
               </dd>
             </div>
           </dl>
         </div>
         <div
+          // ********** ACTIONS **********
           className={`${
             openService ? "block" : "hidden"
           } p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800`}
-          id="about"
+          id="actions"
           role="tabpanel"
-          aria-labelledby="about-tab"
+          aria-labelledby="actions-tab"
         >
-          <h2 className="mb-5 text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-            We invest in the world’s potential
-          </h2>
-
-          <ul
-            role="list"
-            className="space-y-4 text-gray-500 dark:text-gray-400"
-          >
-            <li className="flex space-x-2">
-              <svg
-                className="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-              <span className="font-light leading-tight">
-                Dynamic reports and dashboards
-              </span>
-            </li>
-            <li className="flex space-x-2">
-              <svg
-                className="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-              <span className="font-light leading-tight">
-                Templates for everyone
-              </span>
-            </li>
-            <li className="flex space-x-2">
-              <svg
-                className="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-              <span className="font-light leading-tight">
-                Development workflow
-              </span>
-            </li>
-            <li className="flex space-x-2">
-              <svg
-                className="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-              <span className="font-light leading-tight">
-                Limitless business automation
-              </span>
-            </li>
-          </ul>
+          <dl className="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-2 xl:grid-cols-2 dark:text-white sm:p-8">
+            <div className="flex flex-col items-center justify-center">
+              <Link className="w-full px-4 py-2 mt-4 text-center tracking-wide text-white transition-colors duration-200 transform bg-[#2a9d8f] rounded-md hover:bg-[#2d5564] focus:outline-none focus:bg-[#264653]">
+                View Dataset
+              </Link>
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <button className="w-full px-4 py-2 mt-4 tracking-wide text-white transition-colors duration-200 transform bg-[#9d2a30] rounded-md hover:bg-[#bd4046] focus:outline-none focus:bg-[#8f1b21]">
+                Delete Dataset
+              </button>
+            </div>
+          </dl>
         </div>
       </div>
     </div>
