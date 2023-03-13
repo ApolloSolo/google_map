@@ -39,4 +39,17 @@ const remove_one_address = async (req, res) => {
   }
 };
 
-module.exports = { get_one_address, remove_one_address };
+const edit_address = async (req, res) => {
+  try {
+    const { _id } = req.params;
+    console.log(req.body);
+    const edited_address = await Address.findByIdAndUpdate(_id, req.body, {
+      new: true
+    });
+    res.status(200).json(edited_address);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { get_one_address, remove_one_address, edit_address };

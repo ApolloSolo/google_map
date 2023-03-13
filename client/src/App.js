@@ -37,7 +37,7 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/addresses/:_id" element={<Addresses />} />
-              <Route path="/edit_address/:_id" element={<Address />} />
+              <Route path="/edit_address/:_id/:dataset_id" element={<Address />} />
               <Route path="/account" element={<Account />} />
               <Route path="/upload_csv" element={<UploadCSV />} />
               <Route path="/forgot_pass" element={<ForgotPassword />} />

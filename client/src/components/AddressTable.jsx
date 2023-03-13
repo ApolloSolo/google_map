@@ -24,8 +24,8 @@ const AddressTable = ({address, dataset_info}) => {
           </td>
           <td className="px-6 py-4">
             <Link
-              to={`/edit_address/${address._id}`}
-              className="px-4 py-1 text-sm text-blue-600 bg-blue-200 rounded-full"
+              to={`/edit_address/${address._id}/${dataset_info._id}`}
+              className="px-4 py-1 text-sm text-blue-600 bg-blue-200 rounded-full hover:bg-blue-300 duration-200"
             >
               Edit
             </Link>
@@ -35,5 +35,5 @@ const AddressTable = ({address, dataset_info}) => {
     </>
   )
 }
-
+//
 export default AddressTable

@@ -59,33 +59,33 @@ export default function DatasetCard({ dataset }) {
 
   return (
     <div className="w-full max-w-2xl mx-auto mb-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-      <div className="flex justify-center items-center dark:text-white text-gray-900 p-2">
+      <div className="flex justify-center items-center dark:text-white text-gray-900 p-2 relative">
         {editName ? (
           <input
             name="name"
             onChange={onChange}
             required
             defaultValue={datasetName.name}
-            className="text-gray-900 mr-4 text-center"
+            className="text-gray-900 text-center rounded-md"
           />
         ) : (
-          <strong className="mr-4">{dataset.dataset_name}</strong>
+          <strong className="text-center">{dataset.dataset_name}</strong>
         )}
         {editName ? (
-          <div className="flex items-center">
+          <div className="flex items-center absolute right-2">
             <BiCheck
               onClick={() => {
                 onSubmit();
                 setEditName(!editName);
               }}
               size={24}
-              className="hover:text-green-500 cursor-pointer"
+              className="hover:text-green-500 cursor-pointer hover:scale-125 duration-300"
             />
             <span
               onClick={() => {
                 setEditName(!editName);
               }}
-              className="text-lg ml-4 hover:text-red-500 cursor-pointer"
+              className="text-[1rem] ml-4 font-semibold hover:text-red-500 cursor-pointer hover:scale-125 duration-300"
             >
               X
             </span>
@@ -96,7 +96,7 @@ export default function DatasetCard({ dataset }) {
               setEditName(!editName);
             }}
             size={20}
-            className="hover:text-gray-500 cursor-pointer"
+            className="hover:text-blue-500 cursor-pointer absolute right-2 hover:scale-125 duration-300"
           />
         )}
       </div>
@@ -183,35 +183,35 @@ export default function DatasetCard({ dataset }) {
           role="tabpanel"
           aria-labelledby="stats-tab"
         >
-          <dl className="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-2 xl:grid-cols-2 dark:text-white sm:p-8">
+          <dl className="grid max-w-screen-xl grid-cols-2 gap-6 p-2 mx-auto text-gray-900 sm:grid-cols-2 xl:grid-cols-2 dark:text-white sm:p-2">
             <div className="flex flex-col items-center justify-center">
-              <dt className="mb-2 text-3xl font-extrabold">
+              <dt className="mb-2 sm:text-3xl text-xl sm:font-extrabold font-bold">
                 {dataset.addresses.length}
               </dt>
-              <dd className="font-light text-gray-500 dark:text-gray-400">
+              <dd className="font-light text-center text-gray-500 dark:text-gray-400">
                 Entries
               </dd>
             </div>
             <div className="flex flex-col items-center justify-center">
-              <dt className="mb-2 text-3xl font-extrabold">{dataset.kb} kb</dt>
-              <dd className="font-light text-gray-500 dark:text-gray-400">
-                File Size
+              <dt className="mb-2 sm:text-3xl text-xl sm:font-extrabold font-bold">{dataset.kb} kb</dt>
+              <dd className="font-light text-center text-gray-500 dark:text-gray-400">
+                Upload File Size
               </dd>
             </div>
             <div className="flex flex-col items-center justify-center">
-              <dt className="mb-2 text-3xl font-extrabold">
+              <dt className="mb-2 sm:text-3xl text-xl sm:font-extrabold font-bold">
                 {new Date(dataset.createdAt).toLocaleDateString()}
               </dt>
-              <dd className="font-light text-gray-500 dark:text-gray-400">
-                Created
+              <dd className="font-light text-center text-gray-500 dark:text-gray-400">
+                Dataset Created
               </dd>
             </div>
             <div className="flex flex-col items-center justify-center">
-              <dt className="mb-2 text-3xl font-extrabold">
+              <dt className="mb-2 sm:text-3xl text-xl sm:font-extrabold font-bold">
                 {new Date(dataset.updatedAt).toLocaleDateString()}
               </dt>
-              <dd className="font-light text-gray-500 dark:text-gray-400">
-                Last Modified
+              <dd className="font-light text-gray-500 dark:text-gray-400 text-center">
+              Dataset Last Modified
               </dd>
             </div>
           </dl>
