@@ -1,14 +1,20 @@
-import { useContext, useEffect, useState } from "react";
-import UserContext from "../context/UserContext";
+import { useEffect, useState } from "react";
+import Auth from "../utils/auth";
 
 const UploadCSV = () => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const { login, getUserData } = useContext(UserContext);
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    let user_data = getUserData();
-    setUserData(user_data);
+    const userLoggedIn = Auth.loggedIn();
+    if (!userLoggedIn) {
+      window.location.assign("/login");
+    }
+    const userToken = Auth.getProfile();
+    
+
+    console.log({ username: userToken.data.username, _id: userToken.data._id });
+    setUserData({ username: userToken.data.username, _id: userToken.data._id });
   }, []);
 
   const handleFileInputChange = (event) => {
@@ -22,7 +28,7 @@ const UploadCSV = () => {
 
     console.log(userData.id);
 
-    fetch(`http://localhost:5000/api/file_upload/csv/${userData.id}`, {
+    fetch(`http://localhost:5000/api/file_upload/csv/${userData._id}`, {
       method: "POST",
       body: formData,
       headers: {

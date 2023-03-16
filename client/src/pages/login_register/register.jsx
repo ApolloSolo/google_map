@@ -1,10 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import UserContext from "../../context/UserContext";
+import Auth from "../../utils/auth"
 
 export default function Register() {
-  const { login, getUserData } = useContext(UserContext);
-
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -32,15 +30,8 @@ export default function Register() {
       const data = await response.json();
 
       if (response.ok) {
-        console.log(data);
-        login(
-          JSON.stringify({
-            id: data._id,
-            username: data.username,
-            logged_in: data.logged_in
-          })
-        );
-      } else throw new Error(data.error);
+        Auth.login(data.token);
+      } else throw new Error(data.message);
     } catch (error) {
       setRegisterError(error.message);
     }

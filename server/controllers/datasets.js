@@ -7,6 +7,7 @@ const get_user_datasets = async (req, res) => {
     );
 
     if (!user_datasets.length) {
+      res.status(404);
       throw new Error("User datasets could not be found.");
     }
 
@@ -70,5 +71,5 @@ module.exports = {
   get_user_datasets,
   get_one_dataset,
   delete_one_dataset,
-  update_dataset_name
+  update_dataset_name,
 };

@@ -12,7 +12,7 @@ const getUsers = async (req, res, next) => {
       res.status(404).json({
         error: true,
         success: false,
-        message: "No users could not be found."
+        message: "No users could not be found.",
       });
     }
     res
@@ -20,7 +20,7 @@ const getUsers = async (req, res, next) => {
       .json({ error: false, success: true, data: { user_data: users } });
   } catch (error) {
     res.json({
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -34,7 +34,7 @@ const getUser = async (req, res, next) => {
       res.status(404).json({
         error: true,
         success: false,
-        message: "This user could not be found."
+        message: "This user could not be found.",
       });
     } else {
       res
@@ -43,7 +43,7 @@ const getUser = async (req, res, next) => {
     }
   } catch (error) {
     res.json({
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -83,13 +83,14 @@ const registerUser = async (req, res, next) => {
       _id: newUser.id,
       username: newUser.username,
       password: newUser.password,
-      logged_in: true
+      logged_in: true,
+      token,
     });
   } catch (error) {
     res.json({
       error: true,
       success: false,
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -112,7 +113,7 @@ const login = async (req, res, next) => {
     const correctPassword = await foundUser.isCorrectPassword(password);
 
     if (!correctPassword) {
-      res.status(400);
+      res.status(401);
       throw new Error("Incorrect credentials");
     }
 
@@ -124,13 +125,14 @@ const login = async (req, res, next) => {
       _id: foundUser.id,
       username: foundUser.username,
       email: foundUser.email,
-      logged_in: true
+      logged_in: true,
+      token,
     });
   } catch (error) {
     res.json({
       error: true,
       success: false,
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -138,14 +140,12 @@ const login = async (req, res, next) => {
 const logout = async (req, res, next) => {
   const token = req.cookies["token"];
   res.cookie("token", token, { httpOnly: true, maxAge: 0 });
-  res
-    .status(202)
-    .send({
-      success: true,
-      error: false,
-      message: "Logout Successful",
-      logged_in: false
-    });
+  res.status(202).send({
+    success: true,
+    error: false,
+    message: "Logout Successful",
+    logged_in: false,
+  });
 };
 
 const changePassword = async (req, res) => {
@@ -182,7 +182,7 @@ const changePassword = async (req, res) => {
     res.json({
       error: true,
       success: false,
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -218,7 +218,7 @@ const emailPasswordReset = async (req, res) => {
       userId: user._id,
       token: hashedToken,
       createdAt: Date.now(),
-      expiresAt: Date.now() + 60 * (60 * 1000) // 60 minutes
+      expiresAt: Date.now() + 60 * (60 * 1000), // 60 minutes
     }).save();
 
     // Construct reset URL
@@ -248,7 +248,7 @@ const emailPasswordReset = async (req, res) => {
     res.json({
       error: true,
       success: false,
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -274,7 +274,7 @@ const resetPassword = async (req, res) => {
     // Get DB token
     const dbToken = await Token.findOne({
       token: hashedToken,
-      expiresAt: { $gt: Date.now() }
+      expiresAt: { $gt: Date.now() },
     });
 
     console.log(dbToken);
@@ -294,13 +294,13 @@ const resetPassword = async (req, res) => {
     res.status(201).json({
       error: false,
       success: true,
-      message: "Password reset successful. Please login."
+      message: "Password reset successful. Please login.",
     });
   } catch (error) {
     res.json({
       error: true,
       success: false,
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -313,7 +313,7 @@ const editUserData = async (req, res) => {
     console.log(body);
 
     const updatedUser = await User.findByIdAndUpdate(_id, body, {
-      new: true
+      new: true,
     }).select("-__v -password");
 
     if (!updatedUser) {
@@ -326,7 +326,7 @@ const editUserData = async (req, res) => {
     res.json({
       error: true,
       success: false,
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -340,5 +340,5 @@ module.exports = {
   editUserData,
   changePassword,
   emailPasswordReset,
-  resetPassword
+  resetPassword,
 };

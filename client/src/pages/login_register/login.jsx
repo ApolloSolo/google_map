@@ -1,25 +1,21 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import UserContext from "../../context/UserContext";
+import Auth from "../../utils/auth";
 
 export default function Login() {
-  const { login, getUserData } = useContext(UserContext);
-
-  useEffect(() => {
-    let user_data = getUserData();
-    console.log(user_data);
-    if (user_data) {
-      if (user_data.logged_in) {
-        window.location.assign("/dashboard");
-      }
-    }
-  }, []);
-
   const [formData, setFormData] = useState({
     email: "",
-    password: ""
+    password: "",
   });
   const [loginError, setLoginError] = useState(null);
+
+  useEffect(() => {
+    const userLoggedIn = Auth.loggedIn();
+
+    if (userLoggedIn) {
+      window.location.assign("/dashboard");
+    }
+  }, []);
 
   const loginUser = async (email, password) => {
     try {
@@ -27,26 +23,19 @@ export default function Login() {
         method: "POST",
         body: JSON.stringify({
           email,
-          password
+          password,
         }),
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       });
 
       const data = await response.json();
-
       if (response.ok) {
-        console.log(data);
-        login(
-          JSON.stringify({
-            id: data._id,
-            username: data.username,
-            logged_in: data.logged_in
-          })
-        );
-      } else throw new Error(data.error);
+        Auth.login(data.token);
+      } else throw new Error(data.message);
     } catch (error) {
+      console.log(error);
       setLoginError(error.message);
     }
   };
@@ -70,7 +59,7 @@ export default function Login() {
         <form onSubmit={onSubmit} className="mt-6">
           <div className="mb-2">
             <label
-              for="email"
+              htmlFor="email"
               className="block text-sm font-semibold text-gray-800 dark:text-[#fdf8ad]"
             >
               Email
@@ -85,7 +74,7 @@ export default function Login() {
           </div>
           <div className="mb-2">
             <label
-              for="password"
+              htmlFor="password"
               className="block text-sm font-semibold text-gray-800 dark:text-[#fdf8ad]"
             >
               Password

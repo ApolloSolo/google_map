@@ -1,46 +1,60 @@
-import { useContext, useEffect, useState } from "react";
-import UserContext from "../context/UserContext";
+import { useEffect, useState } from "react";
 import DatasetCard from "../components/DatasetCard";
+import Auth from "../utils/auth";
 
 const Dashboard = () => {
-  const { getUserData } = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
   const [datasets, setDatasets] = useState(null);
+  const [dataRetrievalError, setDataRetrievalError] = useState(null);
 
   useEffect(() => {
-    let user_data = getUserData();
-    if (!user_data || !user_data.logged_in) {
+    const userLoggedIn = Auth.loggedIn();
+    if (!userLoggedIn) {
       window.location.assign("/login");
     }
-    setUserData(user_data);
+    const userToken = Auth.getProfile();
 
-    const fetch_datasets = async (userData) => {
-      const response = await fetch(`/api/datasets/mutli/${userData.id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setDatasets(data.data);
-        console.log(data.data);
+    setUserData({ username: userToken.data.username, _id: userToken.data._id });
+  }, []);
+
+  useEffect(() => {
+    const fetch_datasets = async (user) => {
+      try {
+        const response = await fetch(`/api/datasets/mutli/${user._id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setDatasets(data.data);
+          setLoading(false)
+        } else throw new Error(data.message);
+      } catch (error) {
+        setLoading(false)
+        console.log(error);
+        setDataRetrievalError(error.message);
       }
     };
-    fetch_datasets(user_data);
-  }, []);
+    if (userData) fetch_datasets(userData);
+    console.log(datasets);
+  }, [userData]);
 
   return (
     <>
-      {!datasets ? (
+      {loading ? (
         <p>Loading...</p>
       ) : (
         <div className="relative flex flex-col justify-center h-full overflow-hidden">
-          {
-            datasets.map((dataset) => (
-              <DatasetCard key={dataset._id} dataset={dataset}/>
-            ))
-          }
+          {dataRetrievalError ? (<p className="text-center text-4xl">{dataRetrievalError}</p>) : (
+            <>
+            {datasets.map((dataset) => (
+              <DatasetCard key={dataset._id} dataset={dataset} />
+            ))}
+            </>
+          )}
         </div>
       )}
     </>

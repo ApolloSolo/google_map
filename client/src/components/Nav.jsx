@@ -1,20 +1,22 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Transition } from "@headlessui/react";
 import Switcher from "./Switcher";
-import UserContext from "../context/UserContext";
 import { Link } from "react-router-dom";
+import Auth from "../utils/auth";
 
 function Nav() {
-  const { getUserData, logout } = useContext(UserContext);
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    let user_data = getUserData();
-    setUserData(user_data);
+    if (Auth.loggedIn()) {
+      const user = Auth.getProfile();
+      setUserData({ username: user.data.username, _id: user.data._id });
+    }
   }, []);
 
-  async function logout_user() {
-    logout();
+  async function logout_user(event) {
+    event.preventDefault();
+    Auth.logout();
   }
 
   const [isOpen, setIsOpen] = useState(false);
@@ -24,13 +26,22 @@ function Nav() {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center w-full">
             <div className="flex-shrink-0">
+              <Link to={"/"}>
               <img
                 className="h-8 w-8 rounded-full"
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmM8TZRdq1HY6C85NVNymKK8m6BqHBs0VkVRn2EVE&s"
                 alt="Workflow"
               />
+              </Link>
+              
             </div>
-            {userData ? (<span className="ml-4 dark:text-zinc-50">{userData.username}</span>) : false}
+            {userData ? (
+              <span className="ml-4 dark:text-zinc-50">
+                {userData.username}
+              </span>
+            ) : (
+              false
+            )}
           </div>
           <div className="-mr-2 flex md:hidden">
             <button
@@ -114,7 +125,6 @@ function Nav() {
 
                   <Link
                     onClick={logout_user}
-                    to={"/"}
                     className="dark:text-white dark:hover:bg-gray-700 hover:bg-[#144b44] hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                   >
                     Logout

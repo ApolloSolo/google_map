@@ -12,6 +12,7 @@ import ResetPassword from "./pages/admin/ResetPassword";
 import Account from "./pages/admin/Account";
 import Addresses from "./pages/Addresses";
 import Address from "./pages/Address";
+import Home from "./pages/Home";
 
 function App() {
   const [width, setWidth] = useState(window.innerWidth);
@@ -33,11 +34,15 @@ function App() {
           <header>{width < 768 ? <Nav /> : <SideNav />}</header>
           <main className="w-full p-4">
             <Routes>
+              <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/addresses/:_id" element={<Addresses />} />
-              <Route path="/edit_address/:_id/:dataset_id" element={<Address />} />
+              <Route
+                path="/edit_address/:_id/:dataset_id"
+                element={<Address />}
+              />
               <Route path="/account" element={<Account />} />
               <Route path="/upload_csv" element={<UploadCSV />} />
               <Route path="/forgot_pass" element={<ForgotPassword />} />

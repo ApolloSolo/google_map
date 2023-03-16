@@ -1,53 +1,53 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import control from "../assets/control.png";
 import Switcher from "./Switcher";
-import UserContext from "../context/UserContext";
+import Auth from "../utils/auth";
 
-import {
-  AiOutlineDashboard,
-  AiOutlineCalendar,
-  AiOutlineSearch,
-  AiOutlineLineChart,
-  AiOutlineSetting
-} from "react-icons/ai";
+import { AiOutlineDashboard, AiOutlineLineChart } from "react-icons/ai";
 import { BiLogOut, BiUser, BiFile, BiLogIn, BiPencil } from "react-icons/bi";
 import { Link } from "react-router-dom";
 
 const SideNav = () => {
-  const { getUserData, logout } = useContext(UserContext);
   const [userData, setUserData] = useState(null);
   const [open, setOpen] = useState(false);
   const Menus = [
     {
       title: "Dashboard",
       route: "/dashboard",
-      src: <AiOutlineDashboard size={24} />
+      src: <AiOutlineDashboard size={24} />,
     },
     {
       title: "Account",
       route: "/account",
       src: <BiUser size={24} />,
-      gap: true
+      gap: true,
     },
     {
       title: "Analytics",
       route: "/analytics",
-      src: <AiOutlineLineChart size={24} />
+      src: <AiOutlineLineChart size={24} />,
     },
     {
       title: "Upload CSV",
       route: "/upload_csv",
       src: <BiFile size={24} />,
-    }
+    },
   ];
 
   useEffect(() => {
-    let user_data = getUserData();
-    setUserData(user_data);
+    if (Auth.loggedIn()) {
+      const user = Auth.getProfile();
+      setUserData({ username: user.data.username, _id: user.data._id });
+    }
   }, []);
 
-  async function logout_user() {
-    logout();
+  async function logout_user(event) {
+    event.preventDefault();
+    Auth.logout();
+  }
+
+  async function go_home() {
+    window.location.assign("/");
   }
 
   return (
@@ -59,17 +59,20 @@ const SideNav = () => {
       >
         <img
           src={control}
-          className={`absolute cursor-pointer -right-3 top-9 w-7 border-dark-purple
+          className={`mt-2 absolute cursor-pointer -right-3 top-9 w-7 border-dark-purple
            border-2 rounded-full  ${!open && "rotate-180"}`}
           onClick={() => setOpen(!open)}
         />
-        <div className="flex gap-x-4 items-center">
+
+        <div className="flex gap-x-4 items-center mt-2">
           <img
+            onClick={go_home}
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmM8TZRdq1HY6C85NVNymKK8m6BqHBs0VkVRn2EVE&s"
             className={`cursor-pointer duration-500 rounded-full max-w-10 max-h-10 ${
               open && "rotate-[360deg] max-w-14 max-h-14"
             }`}
           />
+
           <h1
             className={`text-white origin-left font-medium text-xl duration-200 ${
               !open && "scale-0"
