@@ -34,7 +34,6 @@ const Dashboard = () => {
         } else throw new Error(data.message);
       } catch (error) {
         setLoading(false)
-        console.log(error);
         setDataRetrievalError(error.message);
       }
     };

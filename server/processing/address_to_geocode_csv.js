@@ -1,4 +1,4 @@
-const format_incoming = require("./formate_incoming");
+const format_incoming = require("./formate_incoming_csv");
 const geocode_api_call = require("../map_api/geocode_api");
 
 async function address_to_geocode() {

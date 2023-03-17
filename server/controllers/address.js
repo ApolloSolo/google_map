@@ -20,7 +20,10 @@ const get_one_address = async (req, res) => {
 const remove_one_address = async (req, res) => {
   try {
     const { _id } = req.params;
-    const found_address = await Address.findOneAndDelete(_id, { new: true });
+    const found_address = await Address.findByIdAndDelete({_id}, { new: true });
+
+    console.log("***** found_address *****");
+    console.log(found_address);
 
     if (!found_address) {
       res.status(404);
@@ -29,10 +32,11 @@ const remove_one_address = async (req, res) => {
 
     const updated_dataset = await Dataset.updateOne(
       { _id: found_address.dataset_id },
-      { $pullAll: { addresses: [found_address._id] } }
+      { $pullAll: { addresses: [found_address._id] } },
+      { new: true }
     );
 
-    res.status(200).json({ error: false, success: true, data: found_address });
+    res.status(200).json({ error: false, success: true, data: updated_dataset });
   } catch (error) {
     console.log(error);
     res.json({ error: true, success: false, message: error.message });
@@ -44,7 +48,7 @@ const edit_address = async (req, res) => {
     const { _id } = req.params;
     console.log(req.body);
     const edited_address = await Address.findByIdAndUpdate(_id, req.body, {
-      new: true
+      new: true,
     });
     res.status(200).json(edited_address);
   } catch (error) {

@@ -85,9 +85,8 @@ const SideNav = () => {
           {userData ? (
             <>
               {Menus.map((Menu, index) => (
-                <Link to={Menu.route}>
-                  <li
-                    key={index}
+                <Link to={Menu.route} key={index}>
+                  <li                  
                     className={`flex  rounded-md p-2 cursor-pointer hover:bg-[#144b44] hover:text-gray-200 dark:hover:text-gray-800 dark:hover:bg-gray-300 dark:text-gray-200 text-md items-center gap-x-4 
               ${Menu.gap ? "mt-9" : "mt-2"} ${
                       index === 0 && "bg-light-white"

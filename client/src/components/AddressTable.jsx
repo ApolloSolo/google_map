@@ -22,6 +22,12 @@ const AddressTable = ({address, dataset_info}) => {
           <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-200">
             {address.state}
           </td>
+          <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-200">
+            {address.latitude}
+          </td>
+          <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-200">
+            {address.longitude}
+          </td>
           <td className="px-6 py-4">
             <Link
               to={`/edit_address/${address._id}/${dataset_info._id}`}

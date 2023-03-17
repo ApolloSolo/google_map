@@ -1,38 +1,50 @@
-const {Dataset} = require("./index");
+const { Dataset } = require("./index");
 const { Schema, model } = require("mongoose");
-
 
 const opts = { toJSON: { virtuals: true } };
 
-const addressSchema = new Schema({
-  dataset_id: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: "Dataset"
+const addressSchema = new Schema(
+  {
+    dataset_id: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "Dataset",
+    },
+    street_number: {
+      type: String,
+      required: true,
+    },
+    route: {
+      type: String,
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    state: {
+      type: String,
+      required: true,
+    },
+    geo_coded: {
+      type: Boolean,
+      default: false,
+    },
+    latitude: {
+      type: Number,
+      default: 0,
+    },
+    longitude: {
+      type: Number,
+      default: 0,
+    },
   },
-  street_number: {
-    type: String,
-    required: true,
-  },
-  route: {
-    type: String,
-    required: true,
-  },
-  city: {
-    type: String,
-    required: true,
-  },
-  state: {
-    type: String,
-    required: true,
-  },
-}, opts);
-
+  opts
+);
 
 const Address = model("Address", addressSchema);
 
 module.exports = Address;
-
 
 /*
 

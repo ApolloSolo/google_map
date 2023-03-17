@@ -11,8 +11,8 @@ const Address = () => {
       const response = await fetch(`/api/address/${id}`, {
         method: "GET",
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       });
 
       console.log(response);
@@ -24,7 +24,7 @@ const Address = () => {
           street_number: data.data.street_number,
           route: data.data.route,
           city: data.data.city,
-          state: data.data.state
+          state: data.data.state,
         });
       } else throw new Error(data.error);
     };
@@ -38,15 +38,14 @@ const Address = () => {
       method: "PUT",
       body: JSON.stringify(addressData),
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     });
 
     const data = await response.json();
 
     if (response.ok) {
-      console.log("RETURN FROM API");
-      console.log(data);
+      window.location.reload();
     } else throw new Error(data.error);
   };
 
@@ -57,21 +56,22 @@ const Address = () => {
     const response = await fetch(`/api/address/${_id}`, {
       method: "DELETE",
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     });
 
     const data = await response.json();
 
+    console.log(data);
     if (response.ok) {
       window.location.assign(`/addresses/${dataset_id}`);
-    } else throw new Error(data.error);
+    } else throw new Error(data.message);
   };
 
   const onChange = (event) => {
     setAddressData({
       ...addressData,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 

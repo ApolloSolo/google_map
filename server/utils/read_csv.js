@@ -5,6 +5,7 @@ const readline = require("readline");
 const read_csv = async (file_path) => {
   const data = [];
   const headers = [];
+  console.log(file_path)
   rl = readline.createInterface({
     input: fs.createReadStream(file_path),
     crlfDelay: Infinity

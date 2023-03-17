@@ -11,7 +11,6 @@ const UploadCSV = () => {
       window.location.assign("/login");
     }
     const userToken = Auth.getProfile();
-    
 
     console.log({ username: userToken.data.username, _id: userToken.data._id });
     setUserData({ username: userToken.data.username, _id: userToken.data._id });
@@ -26,7 +25,7 @@ const UploadCSV = () => {
     const formData = new FormData();
     formData.append("file", selectedFile);
 
-    console.log(userData.id);
+    console.log(userData._id);
 
     fetch(`http://localhost:5000/api/file_upload/csv/${userData._id}`, {
       method: "POST",
@@ -35,9 +34,12 @@ const UploadCSV = () => {
         ContentType: "multipart/form-data",
       },
     })
-      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        response.json();
+      })
       .then((data) => {
-        console.log(data)
+        console.log(data);
         window.location.assign("/dashboard");
       })
       .catch((error) => console.log(error));
@@ -51,13 +53,13 @@ const UploadCSV = () => {
         </h1>
         <form onSubmit={handleSubmit} className="mt-6">
           <label
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            for="file"
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            htmlFor="file"
           >
             Upload file
           </label>
           <input
-            class="block w-full text-sm text-gray-900 border border-gray-300 rounded-md cursor-pointer bg-[#e4e2d8] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+            className="block w-full text-sm text-gray-900 border border-gray-300 rounded-md cursor-pointer bg-[#e4e2d8] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
             id="file"
             name="file"
             type="file"

@@ -42,7 +42,7 @@ export default function DatasetCard({ dataset }) {
       const data = await response.json();
 
       if (response.ok) {
-        console.log(data);
+        window.location.assign("/dashboard")
       } else throw new Error(data.error);
     } catch (error) {
       console.log(error);

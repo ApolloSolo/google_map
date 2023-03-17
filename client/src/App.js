@@ -32,7 +32,7 @@ function App() {
       >
         <Router>
           <header>{width < 768 ? <Nav /> : <SideNav />}</header>
-          <main className="w-full p-4">
+          <main className="w-full">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
