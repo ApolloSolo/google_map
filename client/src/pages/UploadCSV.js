@@ -40,7 +40,7 @@ const UploadCSV = () => {
       })
       .then((data) => {
         console.log(data);
-        window.location.assign("/dashboard");
+        //window.location.assign("/dashboard");
       })
       .catch((error) => console.log(error));
   };
