@@ -1,6 +1,5 @@
 const { Dataset, Address, User } = require("../models");
 const read_csv = require("../utils/read_csv");
-const path = require("path");
 
 const upload_csv = async (req, res) => {
   console.log("HITTING UPLOAD CSV ROUTE!");

@@ -31,6 +31,14 @@ const read_csv = async (file_path) => {
 
   const kb = (((await (await fsp.stat(file_path)).size )* 0.001)).toFixed(2);
 
+  fs.unlink(file_path, (err) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    console.log('File has been deleted.');
+  });
+
   return {data, kb};
 };
 

@@ -1,5 +1,4 @@
 require("dotenv").config();
-const fs = require("fs/promises");
 const axios = require("axios");
 
 async function geocode_api_call(formated_address) {
