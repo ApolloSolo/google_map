@@ -23,7 +23,7 @@ app.use(cors());
 app.use(require("./routes"));
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+/* app.use(function (req, res, next) {
   next(createError(404));
 });
 
@@ -35,7 +35,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-});
+}); */
 
 if ((process.env.NODE_ENV = "production")) {
   app.use(express.static(path.join(__dirname, "../client/build")));
